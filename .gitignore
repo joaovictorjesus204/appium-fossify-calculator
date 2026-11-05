@@ -1,0 +1,8 @@
+apps/*.apk
+!apps/.gitkeep
+reports/
+__pycache__/
+.pytest_cache/
+.venv/
+venv/
+appium.log
