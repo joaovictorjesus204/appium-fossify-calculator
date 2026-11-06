@@ -64,10 +64,14 @@ def driver(request):
     options.set_capability("appium:language", "pt")
     options.set_capability("appium:locale", "BR")
     options.set_capability("appium:newCommandTimeout", 180)
+    options.set_capability("appium:disableWindowAnimation", True)
     options.set_capability("appium:uiautomator2ServerInstallTimeout", 120000)
     options.set_capability("appium:adbExecTimeout", 60000)
 
     sessao = webdriver.Remote(request.config.getoption("--appium-url"), options=options)
+    # Não esperar o app "ficar ocioso" antes de cada comando: no emulador do CI, sem placa de vídeo,
+    # essa espera estourava o tempo e o UiAutomator2 não conseguia ler a tela.
+    sessao.update_settings({"waitForIdleTimeout": 0})
     yield sessao
     sessao.quit()
 

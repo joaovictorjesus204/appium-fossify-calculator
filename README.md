@@ -118,6 +118,7 @@ scripts/rodar-ci.sh      sobe o Appium e roda os testes dentro do emulador do CI
 | **Leitura de toast** | Mensagens rápidas do Android ("Erro: divisão por zero", "O histórico está vazio") são verificadas pelo UiAutomator2 |
 | **Testes orientados a dados** (`parametrize`) | Um cenário, vários casos, cada um com nome próprio no relatório |
 | **Vídeo de cada teste no CI** | O GitHub Actions roda sem tela. O vídeo mostra o que aconteceu no celular, junto do print da falha |
+| **Estabilidade no emulador do CI** (`waitForIdleTimeout: 0`, nova tentativa ao abrir a tela e `--reruns 2`) | Numa execução agendada, 5 de 27 testes falharam antes de começar, com `Timed out waiting for the root AccessibilityNodeInfo`: o emulador do CI, sem placa de vídeo, ainda não tinha liberado a tela para leitura. O UiAutomator2 deixou de esperar o app ficar ocioso, a abertura da tela tenta de novo e, só no CI, um teste instável roda até mais 2 vezes, ficando marcado como rerun no relatório. O emulador também ganhou 4 núcleos e 4 GB de memória |
 | **Emulador com KVM no CI** | O emulador roda com aceleração de hardware no GitHub Actions, sem serviço pago de nuvem de dispositivos |
 
 ## Limitações

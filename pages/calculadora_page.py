@@ -1,4 +1,7 @@
+import time
+
 from appium.webdriver.common.appiumby import AppiumBy
+from selenium.common.exceptions import WebDriverException
 
 from pages.base import BasePage, por_id
 from pages.conversor_page import SeletorDeConversorPage
@@ -27,7 +30,16 @@ class CalculadoraPage(BasePage):
     }
 
     def carregar(self):
-        self.esperar(self.RESULTADO, tempo=30)
+        # Logo depois de abrir, o emulador do CI às vezes ainda não liberou a tela para leitura
+        # ("waiting for the root AccessibilityNodeInfo"). Tenta de novo antes de desistir.
+        for tentativa in range(3):
+            try:
+                self.esperar(self.RESULTADO, tempo=30)
+                return self
+            except WebDriverException:
+                if tentativa == 2:
+                    raise
+                time.sleep(3)
         return self
 
     def digitar(self, sequencia: str):

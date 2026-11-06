@@ -10,7 +10,8 @@ for i in $(seq 1 30); do
   sleep 2
 done
 
-GRAVAR_VIDEO=1 python -m pytest -v
+# No CI, um teste que falhar por instabilidade do emulador roda de novo até 2 vezes (fica marcado como rerun no relatório).
+GRAVAR_VIDEO=1 python -m pytest -v --reruns 2 --reruns-delay 5
 RESULTADO=$?
 
 kill $APPIUM_PID 2>/dev/null || true
